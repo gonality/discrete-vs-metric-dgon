@@ -1,0 +1,359 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage[a4paper,vmargin=25mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+
+\setlength{\parindent}{0pt}
+\def\schaal{1.55}
+\pagestyle{empty}
+\frenchspacing
+\tikzset{vertex/.style={circle,fill,inner sep=1.5pt},
+         chip/.style={circle,inner sep=1.5pt},
+         red_chip/.style={chip,fill=red!80!black,text=red!10},
+         blue_chip/.style={chip,fill=blue!80!black,text=blue!10},
+         red_degree/.style={circle,draw,red!80!black,ultra thick},
+         blue_degree/.style={circle,draw,blue!80!black,ultra thick}}
+
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\gon}{gon}
+\DeclareMathOperator{\tw}{tw}
+\DeclareMathOperator{\conv}{conv}
+
+\begin{document}
+\section*{Explanation}
+In this file we consider a slight generalisation of tricycle graphs, where we vary the number of cycles on the outer ring. We consider the positive rank divisor with two chips on the central vertex and one chip on the midpoint of each of the transition edges. If the number of cycles equals $3$, $5$ or $7$, this divisor has lower degree than any divisor supported on the vertices. For an even number of cycles, this divisor has degree equal to the minimal degree positive rank divisor supported on the vertices. For an odd number of cycles greater than $7$, this divisor has higher degree than the minimal degree positive rank divisor supported on the vertices.
+
+The following pages show examples of such graphs, where two divisors are given:
+\begin{itemize}
+	\item The \textcolor{red!80!black}{red} divisor is a minimal degree positive rank divisor supported on the vertices of the graph;
+	\item The \textcolor{blue!80!black}{blue} divisor is the aforementioned divisor with two chips on the central vertex and one chip on each of the midpoints of the transition edges.
+\end{itemize}
+
+The degrees of the divisors are shown in the top left and right corners. All divisors shown have positive rank. 
+
+%\newpage
+
+\section*{4 cycles on the outer ring}
+\def\numcykels{4}
+\begin{center}
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] (v\y);
+			\fi
+		}
+		% divisor: [2, 1, 1, 0, 0, 1, 1, 0, 0]
+		\pgfmathsetmacro{\graad}{0}
+		\foreach \x/\d in {0/2, 1/1, 2/1, 5/1, 6/1} {
+			\node[red_chip] at (v\x) {\small\bf \d};
+			\pgfmathparse{\graad + \d}
+			\global\let\graad\pgfmathresult
+		}
+		\pgfmathtruncatemacro{\graad}{\graad}
+		\node[red_degree] at (-2,2) {\graad};
+	\end{tikzpicture}\hfill
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] node[blue_chip] {\small\bf 1} (v\y);
+			\fi
+		}
+		\node[blue_chip] at (v0) {\small\bf 2};
+		\pgfmathtruncatemacro{\graad}{\numcykels + 2}
+		\node[blue_degree] at (2,2) {\graad};
+	\end{tikzpicture}
+\end{center}
+
+\section*{5 cycles on the outer ring}
+\def\numcykels{5}
+\begin{center}
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] (v\y);
+			\fi
+		}
+		% divisor: [4, 2, 0, 0, 0, 1, 1, 0, 0, 0, 0]
+		\pgfmathsetmacro{\graad}{0}
+		\foreach \x/\d in {0/4, 1/2, 5/1, 6/1} {
+			\node[red_chip] at (v\x) {\small\bf \d};
+			\pgfmathparse{\graad + \d}
+			\global\let\graad\pgfmathresult
+		}
+		\pgfmathtruncatemacro{\graad}{\graad}
+		\node[red_degree] at (-2,2) {\graad};
+	\end{tikzpicture}\hfill
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] node[blue_chip] {\small\bf 1} (v\y);
+			\fi
+		}
+		\node[blue_chip] at (v0) {\small\bf 2};
+		\pgfmathtruncatemacro{\graad}{\numcykels + 2}
+		\node[blue_degree] at (2,2) {\graad};
+	\end{tikzpicture}
+\end{center}
+
+
+
+\section*{6 cycles on the outer ring}
+\def\numcykels{6}
+\begin{center}
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] (v\y);
+			\fi
+		}
+		% divisor: [4, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]
+		\pgfmathsetmacro{\graad}{0}
+		\foreach \x/\d in {0/4, 1/1, 2/1, 7/1, 8/1} {
+			\node[red_chip] at (v\x) {\small\bf \d};
+			\pgfmathparse{\graad + \d}
+			\global\let\graad\pgfmathresult
+		}
+		\pgfmathtruncatemacro{\graad}{\graad}
+		\node[red_degree] at (-2,2) {\graad};
+	\end{tikzpicture}\hfill
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] node[blue_chip] {\small\bf 1} (v\y);
+			\fi
+		}
+		\node[blue_chip] at (v0) {\small\bf 2};
+		\pgfmathtruncatemacro{\graad}{\numcykels + 2}
+		\node[blue_degree] at (2,2) {\graad};
+	\end{tikzpicture}
+\end{center}
+
+
+\section*{7 cycles on the outer ring}
+\def\numcykels{7}
+\begin{center}
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] (v\y);
+			\fi
+		}
+		% divisor:[6, 2, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0]
+		\pgfmathsetmacro{\graad}{0}
+		\foreach \x/\d in {0/6, 1/2, 7/1, 8/1} {
+			\node[red_chip] at (v\x) {\small\bf \d};
+			\pgfmathparse{\graad + \d}
+			\global\let\graad\pgfmathresult
+		}
+		\pgfmathtruncatemacro{\graad}{\graad}
+		\node[red_degree] at (-2,2) {\graad};
+	\end{tikzpicture}\hfill
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] node[blue_chip] {\small\bf 1} (v\y);
+			\fi
+		}
+		\node[blue_chip] at (v0) {\small\bf 2};
+		\pgfmathtruncatemacro{\graad}{\numcykels + 2}
+		\node[blue_degree] at (2,2) {\graad};
+	\end{tikzpicture}
+\end{center}
+
+
+\section*{8 cycles on the outer ring}
+\def\numcykels{8}
+\begin{center}
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] (v\y);
+			\fi
+		}
+		% divisor: [6, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0]
+		\pgfmathsetmacro{\graad}{0}
+		\foreach \x/\d in {0/6, 1/1, 2/1, 9/1, 10/1} {
+			\node[red_chip] at (v\x) {\small\bf \d};
+			\pgfmathparse{\graad + \d}
+			\global\let\graad\pgfmathresult
+		}
+		\pgfmathtruncatemacro{\graad}{\graad}
+		\node[red_degree] at (-2,2) {\graad};
+	\end{tikzpicture}\hfill
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] node[blue_chip] {\small\bf 1} (v\y);
+			\fi
+		}
+		\node[blue_chip] at (v0) {\small\bf 2};
+		\pgfmathtruncatemacro{\graad}{\numcykels + 2}
+		\node[blue_degree] at (2,2) {\graad};
+	\end{tikzpicture}
+\end{center}
+
+
+\section*{9 cycles on the outer ring}
+\def\numcykels{9}
+\begin{center}
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] (v\y);
+			\fi
+		}
+		% divisor: [4, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]
+		\pgfmathsetmacro{\graad}{0}
+		\foreach \x/\d in {0/4, 1/1, 2/1, 7/1, 8/1, 13/1, 14/1} {
+			\node[red_chip] at (v\x) {\small\bf \d};
+			\pgfmathparse{\graad + \d}
+			\global\let\graad\pgfmathresult
+		}
+		\pgfmathtruncatemacro{\graad}{\graad}
+		\node[red_degree] at (-2,2) {\graad};
+	\end{tikzpicture}\hfill
+	\begin{tikzpicture}[scale=\schaal]
+		\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+		\node[vertex] (v0) at (0,0) {};
+		\foreach \x in {1,...,\outerring} {
+			\pgfmathsetmacro{\hoek}{(\x - 1 - 0.5*iseven(\numcykels) + (-1)^(\x - 1) * 0.1) / \outerring * 360}
+			\node[vertex] (v\x) at (\hoek:2cm) {};
+		}
+		\foreach \x in {1,...,\outerring} {
+			\draw (v0) -- (v\x);
+			\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+			\ifodd\x
+				\draw (v\x) to[bend left=20] (v\y);
+				\draw (v\x) to[bend right=20] (v\y);
+			\else
+				\draw (v\x) to[bend right=5] node[blue_chip] {\small\bf 1} (v\y);
+			\fi
+		}
+		\node[blue_chip] at (v0) {\small\bf 2};
+		\pgfmathtruncatemacro{\graad}{\numcykels + 2}
+		\node[blue_degree] at (2,2) {\graad};
+	\end{tikzpicture}
+\end{center}
+\end{document}
