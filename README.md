@@ -15,6 +15,8 @@ For gonality computations, we use the programs `find_gonality`, `subdivision_con
 To generate graphs, we sometimes use the program `geng` from the `gtools` suite packaged with `nauty`; see [MP20].
 For instructions to compile these programs, please refer to the documentation of those projects.
 
+The input files [`Figure_4.in`](Figure_4.in) and [`more_cycles_on_the_outer_ring.in`](more_cycles_on_the_outer_ring.in) are part of this repository.
+
 
 ## 1. Verifying the examples from [DSW21, Figure 4]
 In [DSW21, Figure 4], a total of 8 counterexamples are shown.
@@ -27,18 +29,18 @@ subdivision_conjecture -vv < Figure_4.in
 ## 2. More than 3 cycles on the outer ring
 We also considered graphs where the outer ring consists of n cycles for some n ≥ 3.
 Some of these resulted in a counterexample, some didn't.
-Examples can be found in `more_cycles_on_the_outer_ring.pdf`.
+Examples can be found in [`more_cycles_on_the_outer_ring.pdf`](more_cycles_on_the_outer_ring.pdf).
 
 To reproduce these results, run
 ```
-subdivision_conjecture -vv < more_cycles_on_the_outer_ring.in
+subdivision_conjecture -fv < more_cycles_on_the_outer_ring.in
 ```
 
 
 ## 3. The 29 simple counterexamples on 10 vertices
 We have tested the 2-subdivision conjecture for all connected simple graphs on at most 10 vertices.
 We found that there are no counterexamples with ≤ 9 vertices, and exactly 29 counterexamples with 10 vertices.
-These counterexamples are depicted in the file `29_counterexamples.pdf`.
+These counterexamples are depicted in the file [`29_counterexamples.pdf`](29_counterexamples.pdf).
 
 This result can be reproduced by running
 ```
