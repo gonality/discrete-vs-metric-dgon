@@ -12,7 +12,7 @@ Contents:
 
 ## 0. Where to find the code
 For gonality computations, we use the programs `find_gonality`, `subdivision_conjecture` and `Brill_Noether_geng` from [dgon-tools](https://github.com/gonality/dgon-tools/).
-To generate graphs, we sometimes use the program `geng` from the `gtools` suite packaged with `nauty`; see [MP20].
+To generate graphs, we sometimes use the program `geng` from the `gtools` suite packaged with [`nauty`](https://pallini.di.uniroma1.it); see [MP20].
 For instructions to compile these programs, please refer to the documentation of those projects.
 
 The input files [`Figure_4.in`](Figure_4.in) and [`more_cycles_on_the_outer_ring.in`](more_cycles_on_the_outer_ring.in) are part of this repository.
@@ -77,6 +77,6 @@ where `$i` is an integer in the range 0,...,47 denoting the number of the curren
 
 ## References
 
-  [DSW21]: Josse van Dobben de Bruyn, Harry Smit, and Marieke van der Wegen. *Discrete and metric divisorial gonality can be different*, preprint, 2021.
+  [DSW21]: Josse van Dobben de Bruyn, Harry Smit, and Marieke van der Wegen. *Discrete and metric divisorial gonality can be different*, preprint, 2021. https://arxiv.org/abs/2106.12568
   
   [MP20]: Brendan D. McKay and Adolfo Piperno, *nauty and Traces*, version 2.7r1, 2020. https://pallini.di.uniroma1.it.
