@@ -15,7 +15,7 @@ For gonality computations, we use the programs `find_gonality`, `subdivision_con
 To generate graphs, we sometimes use the program `geng` from the `gtools` suite packaged with [`nauty`](https://pallini.di.uniroma1.it); see [MP20].
 For instructions to compile these programs, please refer to the documentation of those projects.
 
-The input files [`Figure_4.in`](Figure_4.in) and [`more_cycles_on_the_outer_ring.in`](more_cycles_on_the_outer_ring.in) are part of this repository.
+The relevant input files ([`Figure_4.in`](Figure_4.in) and [`more_cycles_on_the_outer_ring.in`](more_cycles_on_the_outer_ring.in)) are part of this repository; see above.
 
 
 ## 1. Verifying the examples from [DSW21, Figure 4]
@@ -24,6 +24,7 @@ To verify that each of these is a counterexample, run
 ```
 subdivision_conjecture -vv < Figure_4.in
 ```
+The vertex labels used in the input file `Figure_4.in` are depicted in the file [`Figure_4.pdf`](Figure_4.pdf).
 
 
 ## 2. More than 3 cycles on the outer ring
