@@ -1,0 +1,331 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage[a4paper,landscape,vmargin=25mm,hmargin=13.5mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+\def\schaal{1.55}
+\pagestyle{empty}
+\frenchspacing
+\tikzset{vertex/.style={circle,fill,inner sep=1.5pt},
+         chip/.style={circle,inner sep=1.5pt},
+         red_chip/.style={chip,fill=red!80!black,text=red!10},
+         blue_chip/.style={chip,fill=blue!80!black,text=blue!10},
+         red_degree/.style={circle,draw,red!80!black,ultra thick},
+         blue_degree/.style={circle,draw,blue!80!black,ultra thick}}
+
+\def\schaal{1.7}
+\tikzset{vertex/.style={circle,fill,inner sep=1.5pt}}
+
+
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\gon}{gon}
+\DeclareMathOperator{\tw}{tw}
+\DeclareMathOperator{\conv}{conv}
+
+\begin{document}
+\begin{figure}[h!t]
+	\centering
+	\pgfmathsetmacro{\curschaal}{\schaal * 0.5}
+	\def\chipkleur{cyan!90!black}
+	\def\mylabelx{-2}
+	\def\mylabely{-1.5}
+	\def\abshift{2mm}
+	\def\efghschaal{1.25}
+	\def\efghshift{.5mm}
+	\begin{tikzpicture}[scale=\curschaal,
+	                    yscale=-1,
+	                    vertex/.style={circle,inner sep=1.3pt,fill=black!70},
+	                    edge_chip/.style={regular polygon,regular polygon sides=6,fill=\chipkleur,inner sep=1.65pt},
+	                    vertex_chip/.style={edge_chip}]
+		\begin{scope}[scale=2]
+			\begin{scope}[yshift=\abshift,rotate=-120]
+				% vertices:
+				\node[vertex, label=below:$0$] (v0) at (0,0) {};
+				\node[vertex, label=right:$1$] (v1) at (30:1cm) {};
+				\node[vertex, label=left:$2$] (v2) at (300:1cm) {};
+				\node[vertex, label=below:$3$] (v3) at (240:1cm) {};
+				\node[vertex, label=below:$4$] (v4) at (180:1cm) {};
+				\node[vertex, label=right:$5$] (v5) at (120:1cm) {};
+				\draw (v3) ++(-60:1cm) node[vertex, label=below:$6$] (v6) {};
+				\draw (v5) ++(-1,0) node[vertex, label=below:$7$] (v7) {};
+				\begin{scope}[shift=(v1)]
+					\node[vertex, label=above:$8$] (v8) at (0:1cm) {};
+					\node[vertex, label=above:$9$] (v9) at (60:1cm) {};
+				\end{scope}
+				% edges:
+				\draw (v0) to[bend left=15] (v1);
+				\draw (v0) to[bend right=15] (v1);
+				\draw (v0) to[bend left=15] (v2);
+				\draw (v0) to[bend right=15] (v2);
+				\draw (v0) to[bend left=15] (v5);
+				\draw (v0) to[bend right=15] (v5);
+				\draw (v1) to node[edge_chip] {} (v2);
+				\draw (v5) to node[edge_chip] {} (v1);
+				\draw (v3) to node[edge_chip] {} (v4);
+				\draw (v9) -- (v8) -- (v1) -- (v9);
+				\draw (v6) -- (v2) -- (v3) -- (v6);
+				\draw (v7) -- (v4) -- (v5) -- (v7);
+			\end{scope}
+			% chips on v0
+			\draw (v0) ++(0,.0525) node[vertex_chip] {};
+			\draw (v0) ++(0,-.0525) node[vertex_chip] {};
+			% label
+			\node[anchor=base west] at (\mylabelx,\mylabely) {(a)};
+		\end{scope}
+		
+		\begin{scope}[scale=2, xshift=4cm]
+			\begin{scope}[yshift=\abshift,rotate=-120]
+				% vertices:
+				\node[vertex, label=below:$9$] (v9) at (0,-.1) {};
+				\node[vertex, label=below:$1$] (v1) at (240:1cm) {};
+				\node[vertex, label=left:$2$] (v2) at (300:1cm) {};
+				\begin{scope}[shift=(v1)]
+					\node[vertex, label=below:$0$] (v0) at (-60:1cm) {};
+				\end{scope}
+				\node[vertex, label=right:$3$] (v3) at (30:1cm) {};
+				\begin{scope}[shift=(v3)]
+					\node[vertex, label=above:$5$] (v5) at (60:1cm) {};
+					\node[vertex, label=above:$6$] (v6) at (0:1cm) {};
+				\end{scope}
+				\node[vertex, label=below:$4$] (v4) at (150:1cm) {};
+				\begin{scope}[shift=(v4)]
+					\node[vertex, label=right:$7$] (v7) at (120:1cm) {};
+					\node[vertex, label=below:$8$] (v8) at (180:1cm) {};
+				\end{scope}
+				% edges:
+				\draw (v0) -- (v1) -- (v2) -- (v0);
+				\draw (v1) to node[edge_chip] {} (v4) -- (v7) -- (v8) -- (v4) to node[edge_chip] {} (v3) to node[edge_chip] {} (v2);
+				\draw (v3) -- (v5) -- (v6) -- (v3);
+				\draw (v2) to[bend left=15] (v9);
+				\draw (v2) to[bend right=15] (v9);
+				\draw (v3) to[bend left=15] (v9);
+				\draw (v3) to[bend right=15] (v9);
+				\draw (v4) to[bend left=15] (v9);
+				\draw (v4) to[bend right=15] (v9);
+			\end{scope}
+			% chips on vertices:
+			\draw (v9) ++(0,.0525) node[vertex_chip] {};
+			\draw (v9) ++(0,-.0525) node[vertex_chip] {};
+			% label
+			\node[anchor=base west] at (\mylabelx,\mylabely) {(b)};
+		\end{scope}
+		
+		\begin{scope}[scale=2, xshift=12cm]
+			\begin{scope}[scale=.75,yshift=-2.1mm,yscale=-1]
+				\def\numcykels{5}
+				\pgfmathtruncatemacro{\outerring}{2*\numcykels}
+				\node[vertex, label=above right:$0$] (v0) at (0,0) {};
+				\foreach \x in {1,...,\outerring} {
+					\pgfmathsetmacro{\hoek}{(\x - 1) / \outerring * 360 + 3.5 * (-1)^(\x - 1)}
+					\node[vertex] (v\x) at (\hoek:2cm) {};
+					\node at (\hoek:23mm) {$\x$};
+				}
+				\foreach \x in {1,...,\outerring} {
+					\draw (v0) -- (v\x);
+					\pgfmathtruncatemacro{\y}{mod(\x,\outerring) + 1}
+					\ifodd\x
+						\draw (v\x) to[bend left=20] (v\y);
+						\draw (v\x) to[bend right=20] (v\y);
+					\else
+						\draw (v\x) to[bend right=5] node[edge_chip] {} (v\y);
+					\fi
+				}
+			\end{scope}
+			\draw (v0) ++(0,0.0525) node[vertex_chip] {};
+			\draw (v0) ++(0,-0.0525) node[vertex_chip] {};
+			% label
+			\node[anchor=base west] at (\mylabelx,\mylabely) {(d)};
+		\end{scope}
+		
+		\begin{scope}[scale=2, yshift=4cm]
+			\begin{scope}[scale=\efghschaal,yshift=\efghshift]
+				% vertices:
+				\node[vertex, label=below:$9$] (v9) at (0,0) {};
+				\node[vertex, label=above left:$3$] (v3) at (10:8mm) {};
+				\node[vertex, label=left:$6$] (v6) at (50:8mm) {};
+				\node[vertex, label=right:$2$] (v2) at (130:8mm) {};
+				\node[vertex, label=above right:$5$] (v5) at (170:8mm) {};
+				\node[vertex, label=above left:$1$] (v1) at (250:8mm) {};
+				\node[vertex, label=above right:$7$] (v7) at (290:8mm) {};
+				\begin{scope}[shift=(v3)]
+					\node[vertex, label=below:$0$] (v0) at (50:8mm) {};
+				\end{scope}
+				\begin{scope}[shift=(v2)]
+					\node[vertex, label=below:$8$] (v8) at (170:8mm) {};
+				\end{scope}
+				\begin{scope}[shift=(v1)]
+					\node[vertex, label=above:$4$] (v4) at (290:8mm) {};
+				\end{scope}
+				% edges:
+				\draw (v8) to[bend left=15] node[edge_chip] {} (v0);
+				\draw (v7) to[bend right=20] node[edge_chip] {} (v0);
+				\draw (v8) to[bend right=20] node[edge_chip] {} (v1);
+				\draw (v2) -- (v8)  (v0) -- (v3) -- (v9) -- (v1) (v8) -- (v5) -- (v9) -- (v2) -- (v5);
+				\draw (v3) -- (v6) -- (v0) (v7) -- (v1) -- (v4) -- (v7) -- (v9) -- (v6);
+			\end{scope}
+			% chips on vertices:
+			\draw (v9) ++(0,0.0525) node[vertex_chip] {};
+			\draw (v9) ++(0,-0.0525) node[vertex_chip] {};
+			% label
+			\node[anchor=base west] at (\mylabelx,\mylabely) {(e)};
+		\end{scope}
+		
+		\begin{scope}[scale=2, xshift=8cm]
+			\begin{scope}[scale=.86,yshift=-1.8mm]
+				% vertices
+				\node[vertex, label=below:$0$] (v0) at (0,0) {};
+				\draw (v0) ++(30:6mm) node[vertex, label=above:$1$] (v1) {};
+				\draw (v1) ++(-20:8mm) node[vertex, label=above:$2$] (v2) {};
+				\draw (v1) ++(80:8mm) node[vertex, label=left:$3$] (v3) {};
+				\draw (v2) ++(10:6mm) node[vertex, label=right:$4$] (v4) {};
+				\draw (v3) ++(50:6mm) node[vertex, label=below:$5$] (v5) {};
+				\draw (v0) ++(150:6mm) node[vertex, label=above:$6$] (v6) {};
+				\draw (v6) ++(100:8mm) node[vertex, label=right:$7$] (v7) {};
+				\draw (v6) ++(200:8mm) node[vertex, label=above:$8$] (v8) {};
+				\draw (v7) ++(130:6mm) node[vertex, label=below:$9$] (v9) {};
+				\draw (v8) ++(170:6mm) node[vertex, label=left:$10$] (v10) {};
+				\draw (v0) ++(270:6mm) node[vertex, label=left:$11$] (v11) {};
+				\draw (v11) ++(220:8mm) node[vertex, label=left:$12$] (v12) {};
+				\draw (v11) ++(320:8mm) node[vertex, label=below:$13$] (v13) {};
+				\draw (v12) ++(250:6mm) node[vertex, label=above:$14$] (v14) {};
+				\draw (v13) ++(290:6mm) node[vertex, label=above:$15$] (v15) {};
+				% edges
+				\draw (v0) -- (v1) -- (v2) -- (v3) -- (v1);
+				\draw (v2) -- (v4) -- (v5) -- (v3);
+				\draw (v0) -- (v6) -- (v7) -- (v8) -- (v6);
+				\draw (v7) -- (v9) -- (v10) -- (v8);
+				\draw (v0) -- (v11) -- (v12) -- (v13) -- (v11);
+				\draw (v12) -- (v14) -- (v15) -- (v13);
+				\draw (v5) to node[edge_chip] {} (v9);
+				\draw (v10) to node[edge_chip] {} (v14);
+				\draw (v15) to node[edge_chip] {} (v4);
+			\end{scope}
+			% chips on v0
+			\draw (v0) ++(.0525,0) node[vertex_chip] {};
+			\draw (v0) ++(-.0525,0) node[vertex_chip] {};
+			% label
+			\node[anchor=base west] at (\mylabelx,\mylabely) {(c)};
+		\end{scope}
+	
+		\begin{scope}[scale=2, xshift=4cm,yshift=4cm]
+			\begin{scope}[scale=\efghschaal,yshift=\efghshift]
+				% vertices:
+				\node[vertex, label=below:$9$] (v9) at (0,0) {};
+				\node[vertex, label=above:$3$] (v3) at (10:8mm) {};
+				\node[vertex, label=below:$0$] (v0) at (50:8mm) {};
+				\node[vertex, label=right:$2$] (v2) at (130:8mm) {};
+				\node[vertex, label=above right:$5$] (v5) at (170:8mm) {};
+				\node[vertex, label=above left:$1$] (v1) at (250:8mm) {};
+				\node[vertex, label=right:$4$] (v4) at (290:8mm) {};
+				\begin{scope}[shift=(v3)]
+					\node[vertex, label=below:$6$] (v6) at (50:8mm) {};
+				\end{scope}
+				\begin{scope}[shift=(v2)]
+					\node[vertex, label=below:$8$] (v8) at (170:8mm) {};
+				\end{scope}
+				\begin{scope}[shift=(v1)]
+					\node[vertex, label=above:$7$] (v7) at (290:8mm) {};
+				\end{scope}
+				% edges:
+				\draw (v8) to[bend left=20] node[edge_chip] {} (v0);
+				\draw (v7) to[bend right=30] node[edge_chip] {} (v0);
+				\draw (v8) to[bend right=20] node[edge_chip] {} (v1);
+				\draw (v0) -- (v3) -- (v9) -- (v0) -- (v6) -- (v3);
+				\draw (v2) -- (v8) -- (v5) -- (v9) -- (v1) -- (v4) -- (v9) -- (v2) -- (v5);
+				\draw (v4) -- (v7) -- (v1);
+			\end{scope}
+			% chips on vertices:
+			\draw (v9) ++(0,0.0525) node[vertex_chip] {};
+			\draw (v9) ++(0,-0.0525) node[vertex_chip] {};
+			% label
+			\node[anchor=base west] at (\mylabelx,\mylabely) {(f)};
+		\end{scope}
+	
+		\begin{scope}[scale=2, xshift=8cm,yshift=4cm]
+			\begin{scope}[scale=\efghschaal,yshift=\efghshift]
+				% vertices:
+				\node[vertex, label=below:$9$] (v9) at (0,0) {};
+				\node[vertex, label=right:$7$] (v7) at (10:8mm) {};
+				\node[vertex, label=below:$2$] (v2) at (50:8mm) {};
+				\node[vertex, label=below:$8$] (v8) at (130:8mm) {};
+				\node[vertex, label=left:$1$] (v1) at (170:8mm) {};
+				\node[vertex, label=left:$6$] (v6) at (250:8mm) {};
+				\node[vertex, label=right:$0$] (v0) at (290:8mm) {};
+				\begin{scope}[shift=(v7)]
+					\node[vertex, label=below:$5$] (v5) at (50:8mm) {};
+				\end{scope}
+				\begin{scope}[shift=(v8)]
+					\node[vertex, label=below:$4$] (v4) at (170:8mm) {};
+				\end{scope}
+				\begin{scope}[shift=(v6)]
+					\node[vertex, label=above:$3$] (v3) at (290:8mm) {};
+				\end{scope}
+				% edges:
+				\draw (v2) to[bend right=15] node[edge_chip] {} (v8);
+				\draw (v1) to[bend right=15] node[edge_chip] {} (v6);
+				\draw (v0) to[bend right=15] node[edge_chip] {} (v7);
+				\draw (v3) -- (v0) -- (v9) -- (v1) -- (v8);
+				\draw (v2) -- (v9) -- (v3) -- (v6) -- (v0);
+				\draw (v7) -- (v9) -- (v4) -- (v8) -- (v9) -- (v5) -- (v2) -- (v7) -- (v5);
+				\draw (v4) -- (v1);
+				\draw (v6) -- (v9);
+			\end{scope}
+			% chips on vertices:
+			\draw (v9) ++(-30:0.065cm) node[vertex_chip] {};
+			\draw (v9) ++(-150:0.065cm) node[vertex_chip] {};
+			\draw (v9) ++(90:0.065cm) node[vertex_chip] {};
+			% label:
+			\node[anchor=base west] at (\mylabelx,\mylabely) {(g)};
+		\end{scope}
+	
+		\begin{scope}[scale=2, xshift=12cm,yshift=4cm]
+			\begin{scope}[scale=\efghschaal,yshift=\efghshift]
+				% vertices:
+				\node[vertex, label=below:$9$] (v9) at (0,0) {};
+				\node[vertex, label=above:$3$] (v3) at (10:8mm) {};
+				\node[vertex, label=left:$6$] (v6) at (50:8mm) {};
+				\node[vertex, label=right:$2$] (v2) at (130:8mm) {};
+				\node[vertex, label=above:$5$] (v5) at (170:8mm) {};
+				\node[vertex, label=left:$1$] (v1) at (250:8mm) {};
+				\node[vertex, label=right:$7$] (v7) at (290:8mm) {};
+				\begin{scope}[shift=(v3)]
+					\node[vertex, label=below:$0$] (v0) at (50:8mm) {};
+				\end{scope}
+				\begin{scope}[shift=(v2)]
+					\node[vertex, label=below:$8$] (v8) at (170:8mm) {};
+				\end{scope}
+				\begin{scope}[shift=(v1)]
+					\node[vertex, label=above:$4$] (v4) at (290:8mm) {};
+				\end{scope}
+				% edges:
+				\draw (v8) to[bend left=15] node[edge_chip] {} (v0);
+				\draw (v7) to[bend right=20] node[edge_chip] {} (v0);
+				\draw (v8) to[bend right=20] node[edge_chip] {} (v1);
+				\draw (v0) -- (v3) -- (v9) -- (v0) -- (v6) -- (v9) -- (v1);
+				\draw (v7) -- (v1) -- (v4) -- (v9) -- (v2) -- (v8) -- (v5) -- (v9) -- (v7) -- (v4);
+				\draw (v2) -- (v5);
+				\draw (v3) -- (v6);
+				\draw (v8) -- (v9);
+			\end{scope}
+			% chips on vertices:
+			\draw (v9) ++(-30:0.065cm) node[vertex_chip] {};
+			\draw (v9) ++(-150:0.065cm) node[vertex_chip] {};
+			\draw (v9) ++(90:0.065cm) node[vertex_chip] {};
+			% label:
+			\node[anchor=base west] at (\mylabelx,\mylabely) {(h)};
+		\end{scope}
+		
+	\end{tikzpicture}
+	\caption{Figure 4 of \cite{DSW21} where vertices have labels corresponding to input file Figure\textunderscore4.in} 
+\end{figure}
+
+
+\begin{thebibliography}{DSW21}
+    \bibitem[DSW21]{DSW21} Josse van Dobben de Bruyn, Harry Smit, and Marieke van der Wegen, \emph{Discrete and metric divisorial gonality can be different}, preprint, 2021. \\ \url{https://arxiv.org/abs/2106.12568}.
+\end{thebibliography}
+
+\end{document}
